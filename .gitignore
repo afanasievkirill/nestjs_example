@@ -104,3 +104,6 @@ dist
 .tern-port
 
 .idea
+
+mongo-data-4.4
+.DS_Store
