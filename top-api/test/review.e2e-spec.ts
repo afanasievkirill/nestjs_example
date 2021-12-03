@@ -1,14 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from '../src/app.module';
+import { AppModule } from './../src/app.module';
 import { CreateReviewDto } from '../src/review/dto/create-review.dto';
-import { disconnect, Types } from 'mongoose';
+import { Types, disconnect } from 'mongoose';
 import { REVIEW_NOT_FOUND } from '../src/review/review.constants';
+import { AuthDto } from '../src/auth/dto/auth.dto';
 
 const productId = new Types.ObjectId().toHexString();
 
-const reviewDto: CreateReviewDto = {
+const loginDto: AuthDto = {
+  login: 'test@test.com',
+  password: '123456'
+};
+
+const testDto: CreateReviewDto = {
   name: 'Тест',
   title: 'Заголовок',
   description: 'Описание',
@@ -19,6 +25,7 @@ const reviewDto: CreateReviewDto = {
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let createdId: string;
+  let token: string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -27,30 +34,38 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    const { body } = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send(loginDto);
+    token = body.access_token;
   });
 
-  it('/review/create (POST) - sucess', async (done) => {
+  it('/review/create (POST) - success', async (done) => {
     return request(app.getHttpServer())
       .post('/review/create')
-      .send(reviewDto)
+      .send(testDto)
       .expect(201)
       .then(({ body }: request.Response) => {
         createdId = body._id;
         expect(createdId).toBeDefined();
         done();
-      })
+      });
   });
 
-  it('/review/create (POST) - failed', () => {
+  it('/review/create (POST) - fail', async (done) => {
     return request(app.getHttpServer())
       .post('/review/create')
-      .send({ ...reviewDto, rating: 0 })
-      .expect(400);
+      .send({ ...testDto, rating: 0 })
+      .expect(400)
+      .then(({ body }: request.Response) => {
+        done();
+      });
   });
 
-  it('/review/getByProduct/:productId (GET) - sucess', async (done) => {
+  it('/review/byProduct/:productId (GET) - success', async (done) => {
     return request(app.getHttpServer())
-      .get('/review/getByProduct/' + createdId)
+      .get('/review/byProduct/' + productId)
       .expect(200)
       .then(({ body }: request.Response) => {
         expect(body.length).toBe(1);
@@ -58,9 +73,9 @@ describe('AppController (e2e)', () => {
       });
   });
 
-  it('/review/getByProduct/:productId (GET) - failed', async (done) => {
+  it('/review/byProduct/:productId (GET) - fail', async (done) => {
     return request(app.getHttpServer())
-      .get('/review/getByProduct/' + new Types.ObjectId().toHexString())
+      .get('/review/byProduct/' + new Types.ObjectId().toHexString())
       .expect(200)
       .then(({ body }: request.Response) => {
         expect(body.length).toBe(0);
@@ -68,22 +83,24 @@ describe('AppController (e2e)', () => {
       });
   });
 
-  it('/review/:id (DELETE) - sucess', () => {
+  it('/review/:id (DELETE) - success', () => {
     return request(app.getHttpServer())
       .delete('/review/' + createdId)
-      .expect(200)
+      .set('Authorization', 'Bearer ' + token)
+      .expect(200);
   });
 
-  it('/review/:id (DELETE) - failed', () => {
+  it('/review/:id (DELETE) - fail', () => {
     return request(app.getHttpServer())
       .delete('/review/' + new Types.ObjectId().toHexString())
+      .set('Authorization', 'Bearer ' + token)
       .expect(404, {
         statusCode: 404,
         message: REVIEW_NOT_FOUND
-      })
+      });
   });
 
   afterAll(() => {
     disconnect();
-  })
+  });
 });
