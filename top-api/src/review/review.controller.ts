@@ -27,7 +27,6 @@ export class ReviewController {
 	@Post('create')
 	async create(@Body() dto: CreateReviewDto) {
 		return this.reviewService.create(dto);
-
 	}
 
 	@UseGuards(JwtAuthGuard)

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsArray, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { TopLevelCategory } from '../page.model';
@@ -55,17 +55,18 @@ export class CreatePageDto {
 	@IsString()
 	category: string;
 
-	@ApiProperty()
+	@ApiPropertyOptional()
 	@IsOptional()
 	@ValidateNested()
 	@Type(() => HhDataDto)
 	hh?: HhDataDto;
 
-	@ApiProperty()
+	@ApiPropertyOptional()
 	@IsArray()
+	@IsOptional()
 	@ValidateNested()
 	@Type(() => PageAdvantageDto)
-	advantages: PageAdvantageDto[];
+	advantages?: PageAdvantageDto[];
 
 	@ApiProperty()
 	@IsString()
