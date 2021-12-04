@@ -16,7 +16,9 @@ import { CreateReviewDto } from './dto/create-review.dto';
 import { REVIEW_NOT_FOUND } from './review.constants';
 import { ReviewService } from './review.service';
 import { IdValidationPipe } from '../pipes/ad-validation.pipe';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('review')
 @Controller('review')
 export class ReviewController {
 	constructor(private readonly reviewService: ReviewService) { }

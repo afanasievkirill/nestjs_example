@@ -6,17 +6,34 @@ import { CreatePageDto } from './dto/create-page.dto';
 import { IdValidationPipe } from '../pipes/ad-validation.pipe';
 import { NOT_FOUND_PAGE_ERROR } from './page.constants';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('page')
 @Controller('page')
 export class PageController {
 	constructor(private readonly pageService: PageService) { }
 
+	@ApiOkResponse({
+		description: 'Retrieved page by ID successfully',
+		type: PageService
+	})
+	@ApiInternalServerErrorResponse({
+		description: 'Internal server error',
+	})
 	@UseGuards(JwtAuthGuard)
 	@Post('create')
 	async create(@Body() dto: CreatePageDto) {
 		return this.pageService.create(dto);
 	}
 
+	@ApiOkResponse({
+		description: 'Retrieved page by ID successfully',
+		type: PageService
+	})
+	@ApiNotFoundResponse({ description: NOT_FOUND_PAGE_ERROR })
+	@ApiInternalServerErrorResponse({
+		description: 'Internal server error',
+	})
 	@UseGuards(JwtAuthGuard)
 	@Get(':id')
 	async get(@Param('id', IdValidationPipe) id: string) {

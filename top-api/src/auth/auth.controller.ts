@@ -1,8 +1,10 @@
 import { BadRequestException, Body, Controller, HttpCode, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ALREADY_REGISTERED_ERROR } from './auth.constans';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
 	constructor(private readonly authService: AuthService) { }

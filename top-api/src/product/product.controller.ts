@@ -12,6 +12,7 @@ import {
 	UsePipes,
 	ValidationPipe
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { IdValidationPipe } from '../pipes/ad-validation.pipe';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -20,6 +21,7 @@ import { PRODUCT_NOT_FOUND_ERROR } from './product.constans';
 import { ProductModel } from './product.model';
 import { ProductService } from './product.service';
 
+@ApiTags('product')
 @Controller('product')
 export class ProductController {
 	constructor(private readonly productService: ProductService) { }

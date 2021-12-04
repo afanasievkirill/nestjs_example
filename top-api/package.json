@@ -1,7 +1,7 @@
 {
-	"name": "top-api",
+	"name": "aphk-top-api",
 	"version": "0.0.1",
-	"description": "",
+	"description": "nestjs api example",
 	"author": "",
 	"private": true,
 	"license": "UNLICENSED",
