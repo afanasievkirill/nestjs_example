@@ -7,7 +7,7 @@ import { AuthDto } from 'src/auth/dto/auth.dto';
 import { USER_NOT_FOUND_ERROR, WRONG_PASSWORD_ERROR } from '../src/auth/auth.constans';
 
 const loginDto: AuthDto = {
-	login: 'test@test.ru',
+	login: 'test@test.com',
 	password: '123456'
 };
 

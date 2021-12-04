@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { PageModule } from './page/page.module';
 import { ReviewModule } from './review/review.module';
@@ -21,8 +19,6 @@ import { getMongoConfig } from './configs/mongo.config';
     PageModule,
     ReviewModule,
     ProductModule
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+  ]
 })
 export class AppModule { }
