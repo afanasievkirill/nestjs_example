@@ -11,11 +11,11 @@ export class ProductService {
 	constructor(@InjectModel(ProductModel) private readonly productModel: ModelType<ProductModel>) { }
 
 	async create(dto: CreateProductDto) {
-		return this.productModel.create(dto);
+		return await this.productModel.create(dto);
 	}
 
 	async findById(id: string) {
-		return this.productModel.findById(id).exec();
+		return await this.productModel.findById(id).exec();
 	}
 
 	async deleteById(id: string) {
@@ -46,13 +46,24 @@ export class ProductService {
 					from: 'Review',
 					localField: '_id',
 					foreignField: 'productId',
-					as: 'review'
+					as: 'reviews'
 				}
 			},
 			{
 				$addFields: {
-					reviewCount: { $size: '$review' },
-					reviewAvg: { $avg: '$review.rating' }
+					reviewCount: { $size: '$reviews' },
+					reviewAvg: { $avg: '$reviews.rating' },
+					reviews: {
+						$function: {
+							body: `functions(reviews){
+								reviews.sort((a,b) => new Date (b.createdAt) - new Date (a.createdAt))
+								return reviews;
+							}`,
+							args: ['$reviews'],
+							lang: 'js'
+						}
+					}
+
 				}
 			}
 		]).exec() as (ProductModel & { review: ReviewModel[], reviewCount: number, reviewAwg: number })[]

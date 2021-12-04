@@ -1,0 +1,1 @@
+export const NOT_FOUND_PAGE_ERROR = 'Не найдена страница с таким Id!';
