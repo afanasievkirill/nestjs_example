@@ -14,5 +14,5 @@ jobs:
           name: ghcr.io/afanasievkirill/nestjs_example/nestjs_api_example
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          workdir: ./top-api
+          workdir: top-api
           tags: "develop" 
