@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@master
       - name: Publish to registy
       - uses: elgohr/Publish-Docker-Github-Action@master
-        with:
+      - with:
           registry: ghcr.io
           name: ghcr.io/afanasievkirill/nestjs_example/nestjs_api_example
           username: ${{ github.actor }}
