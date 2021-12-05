@@ -6,7 +6,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: cd ./top-api
       - uses: actions/checkout@master
       - name: Publish to registy
         uses: elgohr/Publish-Docker-Github-Action@master
@@ -15,6 +14,4 @@ jobs:
           name: ghcr.io/afanasievkirill/nestjs_example/nestjs_api_example
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          dockerfile: top-api/Dockerfile
-          workdir: top-api/
           tags: "develop" 
