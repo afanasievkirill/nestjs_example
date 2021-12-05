@@ -15,7 +15,7 @@ export class PageController {
 
 	@ApiOkResponse({
 		description: 'Retrieved page by ID successfully',
-		type: PageService
+		type: PageModel
 	})
 	@ApiInternalServerErrorResponse({
 		description: 'Internal server error',
@@ -77,5 +77,17 @@ export class PageController {
 	@Post('find')
 	async find(@Body() dto: FindPageDto) {
 		return this.pageService.findByCategory(dto.firstCategory);
+	}
+
+	@ApiOkResponse({
+		description: 'Retrieved page by ID successfully',
+		type: PageModel
+	})
+	@ApiInternalServerErrorResponse({
+		description: 'Internal server error',
+	})
+	@Get('textSearch/:text')
+	async textSearch(@Param('text', IdValidationPipe) text: string) {
+		return this.pageService.findByText(text);
 	}
 }
