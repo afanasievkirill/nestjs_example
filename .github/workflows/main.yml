@@ -15,5 +15,4 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           workdir: ./top-api
-          dockerfile: ./top-api/Dockerfile
           tags: "develop" 
