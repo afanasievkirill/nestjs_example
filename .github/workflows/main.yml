@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./top-api
+      - uses: cd ./top-api
       - uses: actions/checkout@master
       - name: Publish to registy
         uses: elgohr/Publish-Docker-Github-Action@master
