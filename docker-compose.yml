@@ -1,5 +1,15 @@
 version: '3'
 services:
+  top_api:
+    image: ghcr.io/afanasievkirill/nestjs_example/nestjs_api_example:develop
+    container_name: top_api
+    restart: always
+    user: node
+    ports:
+      - 3000:3000
+    depends_on: mongo_top_api
+    volumes:
+      - ./.env:/opt/app/.env
   mongo:
     image: mongo:4.4.4
     container_name: mongo_top_api

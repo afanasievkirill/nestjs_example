@@ -107,3 +107,4 @@ dist
 
 mongo-data-4.4
 .DS_Store
+/uploads

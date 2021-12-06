@@ -28,7 +28,7 @@ export class PageController {
 
 	@ApiOkResponse({
 		description: 'Retrieved page by ID successfully',
-		type: PageService
+		type: PageModel
 	})
 	@ApiNotFoundResponse({ description: NOT_FOUND_PAGE_ERROR })
 	@ApiInternalServerErrorResponse({
