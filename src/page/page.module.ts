@@ -16,6 +16,7 @@ import { PageService } from './page.service';
       }
     ])
   ],
-  providers: [PageService]
+  providers: [PageService],
+  exports: [PageService]
 })
 export class PageModule { }

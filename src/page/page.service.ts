@@ -20,6 +20,10 @@ export class PageService {
 		return await this.pageModel.findOne({ alias }).exec();
 	}
 
+	async findAll() {
+		return await this.pageModel.find({}).exec();
+	}
+
 	async findByText(text: string) {
 		return await this.pageModel.find({ $text: { $search: text, $caseSensitive: false } }).exec();
 	}
