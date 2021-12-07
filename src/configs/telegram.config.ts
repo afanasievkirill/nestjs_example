@@ -1,9 +1,14 @@
 
+import { ConfigService } from "@nestjs/config";
 import { ITelegramOptions } from "../telegram/telegram.interface";
 
-export const getTelegramConfig = (): ITelegramOptions => {
+export const getTelegramConfig = (configService: ConfigService): ITelegramOptions => {
+	const token = configService.get('TELEGRAM_TOKEN')
+	if (!token) {
+		new Error('Телеграм токен не задан');
+	}
 	return {
-		token: '',
-		chatId: ''
+		token: token,
+		chatId: configService.get('CHAT_ID') ?? ''
 	};
 };
